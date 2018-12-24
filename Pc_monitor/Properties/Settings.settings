@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Pc_monitor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="catlocation" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="b1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">07:00</Value>
+    </Setting>
+    <Setting Name="b2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">09:00</Value>
+    </Setting>
+    <Setting Name="l1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">11:00</Value>
+    </Setting>
+    <Setting Name="l2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">17:00</Value>
+    </Setting>
+    <Setting Name="d1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">17:00</Value>
+    </Setting>
+    <Setting Name="d2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">18:00</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
