@@ -23,8 +23,6 @@ C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\bin\Debug\SqlServer
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\bin\Debug\Pc_monitor.exe
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\bin\Debug\Pc_monitor.pdb
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\bin\Debug\Microsoft.SqlServer.Types.dll
-C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\bin\Debug\Microsoft.Practices.ObjectBuilder.dll
-C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.csprojResolveAssemblyReference.cache
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.Form1.resources
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.login.resources
 C:\Users\zhangyufei\Desktop\Pc_monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.Properties.Resources.resources

@@ -49,7 +49,7 @@ namespace Pc_monitor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("09:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("07:30")]
         public string b2 {
             get {
                 return ((string)(this["b2"]));
@@ -61,7 +61,7 @@ namespace Pc_monitor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("11:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("08:00")]
         public string l1 {
             get {
                 return ((string)(this["l1"]));

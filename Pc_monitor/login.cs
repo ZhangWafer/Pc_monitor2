@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ using System.Windows.Forms;
 using Pc_monitor;
 using XinYu.Framework.Library.Factory;
 using XinYu.Framework.Library.Interface;
+using Newtonsoft.Json;
 
 namespace Pc_monitor
 {
@@ -54,7 +56,15 @@ namespace Pc_monitor
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string jsonText = textBox1.Text;
+            JavaScriptObject jsonObj = JavaScriptConvert.DeserializeObject<JavaScriptObject>(jsonText);
+            string pcNum = jsonObj["Num"].ToString();
+            string staffEnum = jsonObj["staffEnum"].ToString(); 
+        }
 
+      
 
     }
 
