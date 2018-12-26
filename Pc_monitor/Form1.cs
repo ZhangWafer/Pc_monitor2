@@ -20,16 +20,16 @@ namespace Pc_monitor
         public Form1()
         {
             InitializeComponent();
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            //规定好label2的大小，以便于换行
-            label2.Size = new Size(1000, 100);
+            //设置全屏
+           this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+           this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         }
 
-        //
+        
         private DataTable PcTable;
         private DataTable WorkerTable;
         private DataTable All_OrderDetail;
+        private DataTable All_OrderTable;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -45,6 +45,7 @@ namespace Pc_monitor
                 PcTable = SqlHelper.ExecuteDataTable("select * from Cater.PCStaff");
                 WorkerTable = SqlHelper.ExecuteDataTable("select * from Cater.WorkerStaff");
                 All_OrderDetail = SqlHelper.ExecuteDataTable("select * from Cater.CookbookSetInDateDetail");
+                All_OrderTable = SqlHelper.ExecuteDataTable("select * from Cater.CookbookSetInDate");
             }
             catch (Exception exception)
             {
@@ -59,6 +60,7 @@ namespace Pc_monitor
         //全局变量，存储当前二维码的
         private string Temp_pcNum = null;
         private string staffEnum = null;
+        //CookbookSetInDate的表格
         DataTable dt2 = null;
 
 
@@ -237,7 +239,7 @@ namespace Pc_monitor
         public void button_MouseClick(object sender, EventArgs e)
         {
 
-            Button button = (Button)sender;
+            Button button = (Button) sender;
             //label1
             Control control_show = null;
             try
@@ -251,8 +253,8 @@ namespace Pc_monitor
             }
 
             this.Controls.Remove(control_show);
-            label2.Font = new Font("宋体粗体", 18);
-            label2.ForeColor = Color.White;
+            label2.Font = new Font("黑体", 22);
+            label2.ForeColor = Color.Red;
 
 
             //保存选择数字到selectedNum，然后再提交
@@ -262,13 +264,35 @@ namespace Pc_monitor
 
             //显示当前选择菜品的详细！
             label2.Text = "当前选择菜品 : ";
-            DataRow[] tempDataRows= All_OrderDetail.Select("CookbookDateId=" + numarray);
-            
-            for (int i = 0; i < tempDataRows.Length; i++)
+            DataRow[] tempDataRows = All_OrderDetail.Select("CookbookDateId=" + numarray);
+            //添加排餐
+            if (tempDataRows.Length < 6)
             {
-                label2.Text += tempDataRows[i][3] + "  ";
+                for (int i = 0; i < tempDataRows.Length; i++)
+                {
+                    label2.Text += tempDataRows[i][3] + "  ";
+                }
             }
-
+            else
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    label2.Text += tempDataRows[i][3] + "  ";
+                }
+                label2.Text += "\r\n";
+                for (int i = 5; i < tempDataRows.Length; i++)
+                {
+                    label2.Text += tempDataRows[i][3] + "  ";
+                }
+            }
+            //添加价格
+            label3.Text = "";
+            DataRow[] priceRows = All_OrderTable.Select("Id=" + numarray);
+            label3.Text += "原价：" + priceRows[0][11].ToString();
+            label3.Text += "警员价格：" + priceRows[0][12].ToString();
+            label3.Text += "\r\n";
+            label3.Text += "职工价格:" + priceRows[0][13].ToString();
+            //label3.Text +="家属价格：" priceRows[0][1].ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -15,6 +15,8 @@ namespace Pc_monitor
         public backForm()
         {
             InitializeComponent();
+          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
