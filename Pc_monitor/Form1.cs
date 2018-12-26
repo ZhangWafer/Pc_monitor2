@@ -20,16 +20,38 @@ namespace Pc_monitor
         public Form1()
         {
             InitializeComponent();
-            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            //this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            //规定好label2的大小，以便于换行
+            label2.Size = new Size(1000, 100);
         }
+
+        //
+        private DataTable PcTable;
+        private DataTable WorkerTable;
+        private DataTable All_OrderDetail;
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //启动定时器
             timer1.Enabled = true;
             timer1.Start();
-            backForm bkForm=new backForm();
+            //显示第二显示屏画面
+            backForm bkForm = new backForm();
             bkForm.Show();
+            //读取用户表格---只在开机读取一次
+            try
+            {
+                PcTable = SqlHelper.ExecuteDataTable("select * from Cater.PCStaff");
+                WorkerTable = SqlHelper.ExecuteDataTable("select * from Cater.WorkerStaff");
+                All_OrderDetail = SqlHelper.ExecuteDataTable("select * from Cater.CookbookSetInDateDetail");
+            }
+            catch (Exception exception)
+            {
+
+                MessageBox.Show("数据库连接失败!" + exception.Message);
+            }
+
         }
 
 
@@ -61,21 +83,37 @@ namespace Pc_monitor
             {
                 try
                 {
+                    //解析扫码数据，拿取关键信息
                     string jsonText = richTextBox1.Text;
                     JavaScriptObject jsonObj = JavaScriptConvert.DeserializeObject<JavaScriptObject>(jsonText);
                     Temp_pcNum = jsonObj["Num"].ToString();
                     staffEnum = jsonObj["staffEnum"].ToString();
+                    //检查是否存在这个人
+                    DataRow[] selectedResult = PcTable.Select("PCNum=" + Temp_pcNum);
+                    if (selectedResult.Length==0)
+                    {
+                        richTextBox1.Text = "";
+                        label2.Font = new Font("宋体粗体", 30);
+                        label2.ForeColor = Color.Red;
+                        label2.Text = "请出示正确的二维码";
+                       
+                        return;
+                    }
+                    //显示扫码成功！大字体
                     richTextBox1.Text = "";
+                    label2.Font = new Font("宋体粗体", 30);
+                    label2.ForeColor = Color.GreenYellow;
                     label2.Text = "扫码成功！";
                     //扫码成功写入xml文件
                     AppendXml(staffEnum, Temp_pcNum, whole_catlocation.ToString(), TempOrderId.ToString(),
-                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     AllowTakeOrderBool = false;
                     button1.Enabled = false;
                     TakeOrderBool = false;
                 }
-                catch (Exception)
+                catch (Exception EX)
                 {
+                    MessageBox.Show(EX.Message);
                     richTextBox1.Text = "";
                     label2.Text = "请出示正确的二维码";
 
@@ -137,8 +175,7 @@ namespace Pc_monitor
                 string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
                 try
                 {
-
-                    dt2 =
+                  dt2 =
                   SqlHelper.ExecuteDataTable("select * from  Cater.CookbookSetInDate where CafeteriaId=" + catlocation +
                                  " and CookbookEnum='" + currentCat + "' and ChooseDate='" + todayDate + "'");
                 }
@@ -193,6 +230,8 @@ namespace Pc_monitor
             }
         }
 
+
+
         private int selectedNum = 0;
 
         public void button_MouseClick(object sender, EventArgs e)
@@ -212,18 +251,32 @@ namespace Pc_monitor
             }
 
             this.Controls.Remove(control_show);
-            label2.Text = "当前选择餐次 : " + button.Text;
+            label2.Font = new Font("宋体粗体", 18);
+            label2.ForeColor = Color.White;
+
 
             //保存选择数字到selectedNum，然后再提交
             string numarray = (button.Name.Split('*'))[1];
             TempOrderId = Convert.ToInt16(numarray);
             // MessageBox.Show(selectedNum.ToString());
+
+            //显示当前选择菜品的详细！
+            label2.Text = "当前选择菜品 : ";
+            DataRow[] tempDataRows= All_OrderDetail.Select("CookbookDateId=" + numarray);
+            
+            for (int i = 0; i < tempDataRows.Length; i++)
+            {
+                label2.Text += tempDataRows[i][3] + "  ";
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             TakeOrderBool = true;
             label2.Text = "请扫码！";
+            label2.Font = new Font("宋体粗体", 30);
+            label2.ForeColor = Color.Red;
             richTextBox1.Focus();
         }
 
@@ -237,7 +290,7 @@ namespace Pc_monitor
             xe1.SetAttribute("Id", Id);//设置该节点的ISBN属性
 
             XmlElement xesub1 = xmlDoc.CreateElement("CafeteriaId");//添加一个名字为title的子节点
-            xesub1.InnerText = CafeteriaId;//设置文本
+            xesub1.InnerText = CafeteriaId;//设置文本NM
             xe1.AppendChild(xesub1);//把title添加到<book>节点中
 
             XmlElement xesub2 = xmlDoc.CreateElement("CookbookSetInDateId");
