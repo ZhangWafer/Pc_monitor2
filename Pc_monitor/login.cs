@@ -58,10 +58,17 @@ namespace Pc_monitor
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string jsonText = textBox1.Text;
-            JavaScriptObject jsonObj = JavaScriptConvert.DeserializeObject<JavaScriptObject>(jsonText);
-            string pcNum = jsonObj["Num"].ToString();
-            string staffEnum = jsonObj["staffEnum"].ToString(); 
+            try
+            {
+                DataTable dt = SqlHelper.ExecuteDataTable("select * from Cater.PCStaff");
+                MessageBox.Show("成功！");
+            }
+            catch (Exception exxx)
+            {
+
+                MessageBox.Show(exxx.Message);
+            }
+
         }
 
       

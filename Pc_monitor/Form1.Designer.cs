@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,7 +48,7 @@
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Location = new System.Drawing.Point(11, 100);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1328, 647);
+            this.groupBox1.Size = new System.Drawing.Size(1328, 526);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -80,7 +81,7 @@
             this.button1.BackgroundImage = global::Pc_monitor.Properties.Resources.login_bg2;
             this.button1.Font = new System.Drawing.Font("宋体", 20F);
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(528, 765);
+            this.button1.Location = new System.Drawing.Point(523, 633);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(359, 81);
             this.button1.TabIndex = 3;
@@ -102,15 +103,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Pc_monitor.Properties.Resources.login_bg2;
-            this.ClientSize = new System.Drawing.Size(1344, 862);
+            this.ClientSize = new System.Drawing.Size(1344, 730);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "点餐系统";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

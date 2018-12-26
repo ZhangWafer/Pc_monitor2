@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 using Newtonsoft.Json;
 
 
@@ -19,30 +20,43 @@ namespace Pc_monitor
         public Form1()
         {
             InitializeComponent();
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            //this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Enabled = true;
             timer1.Start();
-
-
-
-
+            backForm bkForm=new backForm();
+            bkForm.Show();
         }
 
 
-        private int timer_count_10s = 0;
+        private int timer_count_10s = 59;
         //全局变量，存储当前二维码的
         private string Temp_pcNum = null;
         private string staffEnum = null;
         DataTable dt2 = null;
 
+
+
+        //打菜号暂时变量
+        public static int TempOrderId = 0;
+        public static bool TakeOrderBool = true;
+        public static bool AllowTakeOrderBool = true;
+        int whole_catlocation = Properties.Settings.Default.catlocation;
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //1秒跑一次的程序
+            //1秒跑一次的程序1
+            if (AllowTakeOrderBool==true)
+            {
+                if (button1.Enabled==false)
+                {
+                    button1.Enabled = true;
+                }
+            }
+            //1秒跑一次的程序2
             if (richTextBox1.Text.Contains("\n"))
             {
                 try
@@ -53,6 +67,12 @@ namespace Pc_monitor
                     staffEnum = jsonObj["staffEnum"].ToString();
                     richTextBox1.Text = "";
                     label2.Text = "扫码成功！";
+                    //扫码成功写入xml文件
+                    AppendXml(staffEnum, Temp_pcNum, whole_catlocation.ToString(), TempOrderId.ToString(),
+                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    AllowTakeOrderBool = false;
+                    button1.Enabled = false;
+                    TakeOrderBool = false;
                 }
                 catch (Exception)
                 {
@@ -67,7 +87,7 @@ namespace Pc_monitor
             }
 
             //10秒跑一次程序
-            if (timer_count_10s >= 10)
+            if (timer_count_10s >= 60)
             {
 
                 //分割线·············分割线//
@@ -105,19 +125,22 @@ namespace Pc_monitor
                 }
                 else
                 {
-                    currentCat = "Dinner";
+                    currentCat = "Supper";
                     showString = "晚餐";
                 }
                 if (dt2 != null)
                 {
                     dt2.Clear();
                 }
+
+                //拿出今天的日期
+                string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
                 try
                 {
-                   
-                  dt2 =
-                SqlHelper.ExecuteDataTable("select * from  Cater.CookbookSetInDate where CafeteriaId=" + catlocation +
-                               " and CookbookEnum='" + currentCat + "' and ChooseDate='2018-12-24'");
+
+                    dt2 =
+                  SqlHelper.ExecuteDataTable("select * from  Cater.CookbookSetInDate where CafeteriaId=" + catlocation +
+                                 " and CookbookEnum='" + currentCat + "' and ChooseDate='" + todayDate + "'");
                 }
                 catch (Exception)
                 {
@@ -138,27 +161,26 @@ namespace Pc_monitor
                     button.Font = new Font("宋体粗体", 14);
                     button.TextAlign = ContentAlignment.MiddleCenter;
                     button.Name = "row*" + dtRows[i][0];
-                    button.Text = showString + "--" + dtRows[i][4];
+                    button.Text = showString + "--" + dtRows[i][5];
 
                     //通过坐标设置位置
                     button.Size = new Size(200, 40);
                     if (i < 5)
                     {
-                        button.Location = new Point(20 + 260*i, 20);
+                        button.Location = new Point(20 + 260 * i, 20);
                     }
                     else if (i >= 5 && i <= 9)
                     {
-                        button.Location = new Point(20 + 260*(i - 5), 80);
+                        button.Location = new Point(20 + 260 * (i - 5), 80);
                     }
                     else if (i >= 10 && i <= 14)
                     {
-                        button.Location = new Point(20 + 260*(i - 10), 140);
+                        button.Location = new Point(20 + 260 * (i - 10), 140);
                     }
                     else if (i >= 15 && i <= 19)
                     {
-                        button.Location = new Point(20 + 260*(i - 15), 200);
+                        button.Location = new Point(20 + 260 * (i - 15), 200);
                     }
-
                     //将groubox添加到页面上
                     groupBox1.Controls.Add(button);
                     button.MouseClick += new MouseEventHandler(button_MouseClick);
@@ -176,34 +198,58 @@ namespace Pc_monitor
         public void button_MouseClick(object sender, EventArgs e)
         {
 
-            Button button = (Button) sender;
+            Button button = (Button)sender;
             //label1
-            Control control_show=null;
+            Control control_show = null;
             try
-            { 
-                 control_show = Controls.Find("label_show", true)[0];
+            {
+                control_show = Controls.Find("label_show", true)[0];
 
             }
             catch (Exception)
             {
                 Console.Write("123");
             }
-           
-            this.Controls.Remove(control_show);
-          
-            label2.Text = "当前选择餐次 : "+button.Text;
 
-           
+            this.Controls.Remove(control_show);
+            label2.Text = "当前选择餐次 : " + button.Text;
 
             //保存选择数字到selectedNum，然后再提交
-            string numarray =( button.Name.Split('*'))[1];
-            selectedNum = Convert.ToInt16(numarray);
-           // MessageBox.Show(selectedNum.ToString());
+            string numarray = (button.Name.Split('*'))[1];
+            TempOrderId = Convert.ToInt16(numarray);
+            // MessageBox.Show(selectedNum.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            TakeOrderBool = true;
+            label2.Text = "请扫码！";
             richTextBox1.Focus();
+        }
+
+        private void AppendXml(string Type, string Id, string CafeteriaId, string CookbookSetInDateId, string Datatime)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(@"d:\User.xml");
+            XmlNode root = xmlDoc.SelectSingleNode("Root");//查找<bookstore>
+            XmlElement xe1 = xmlDoc.CreateElement("User");//创建一个<book>节点
+            xe1.SetAttribute("Type", Type);//设置该节点的genre属性
+            xe1.SetAttribute("Id", Id);//设置该节点的ISBN属性
+
+            XmlElement xesub1 = xmlDoc.CreateElement("CafeteriaId");//添加一个名字为title的子节点
+            xesub1.InnerText = CafeteriaId;//设置文本
+            xe1.AppendChild(xesub1);//把title添加到<book>节点中
+
+            XmlElement xesub2 = xmlDoc.CreateElement("CookbookSetInDateId");
+            xesub2.InnerText = CookbookSetInDateId;
+            xe1.AppendChild(xesub2);
+
+            XmlElement xesub3 = xmlDoc.CreateElement("Datatime");
+            xesub3.InnerText = Datatime;
+            xe1.AppendChild(xesub3);
+
+            root.AppendChild(xe1);//把book添加到<bookstore>根节点中
+            xmlDoc.Save(@"d:\User.xml");
         }
 
     }
