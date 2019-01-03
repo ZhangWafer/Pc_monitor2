@@ -15,7 +15,9 @@ namespace Pc_monitor
         public backForm()
         {
             InitializeComponent();
-          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.Manual; //窗体的位置由Location属性决定
+            this.Location = (Point)new Size(3000, 0);         //窗体的起始位置为(x,y)
+          //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
         }
 
