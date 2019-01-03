@@ -60,3 +60,4 @@ E:\GitHub\PCC2018.12.25monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.Form5.
 E:\GitHub\PCC2018.12.25monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.login.resources
 E:\GitHub\PCC2018.12.25monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.Properties.Resources.resources
 E:\GitHub\PCC2018.12.25monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.csproj.GenerateResource.Cache
+E:\GitHub\PCC2018.12.25monitor\Pc_monitor\Pc_monitor\obj\Debug\Pc_monitor.csprojResolveAssemblyReference.cache
