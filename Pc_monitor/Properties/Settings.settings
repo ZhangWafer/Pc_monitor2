@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="catlocation" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="b1" Type="System.String" Scope="User">
       <Value Profile="(Default)">07:00</Value>
